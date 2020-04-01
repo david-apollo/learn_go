@@ -2,7 +2,6 @@ package filelisting
 
 import (
 	"fmt"
-	"errors"
 	"strings"
 	"io/ioutil"
 	"os"
