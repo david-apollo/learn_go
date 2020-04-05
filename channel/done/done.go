@@ -2,38 +2,51 @@ package main
 
 import (
 	"fmt"
-	"time"
+	"sync"
 )
 
 
-func worker(id int, c chan int) {
-	for n := range c{
+func doWorker(id int, w worker) {
+	for n := range w.in{
 		fmt.Printf("Worker %d received %c\n", id, n)
+		w.done()
 	}
 }
 
 
-func createWorker(id int) chan<- int {
-	c := make(chan int)
-	go worker(id, c)
-	return c
+type worker struct {
+	in chan int
+	done func ()
+}
+
+
+func createWorker(id int, wg *sync.WaitGroup) worker {
+	w := worker{
+		in: make(chan int),
+		done: func() {wg.Done()},
+	}
+	go doWorker(id, w)
+	return w
 }
 
 
 func channelDemo() {
-	var channels [10]chan<- int
+	var workers [10]worker
+	var wg sync.WaitGroup
 	for i := 0; i < 10; i++ {
-		channels[i] = createWorker(i)
+		workers[i] = createWorker(i, &wg)
 	}
 
-	for i := 0; i < 10; i++ {
-		channels[i] <- 'a' + i
+	wg.Add(20)
+	for i, worker := range workers{
+		worker.in <- 'a' + i
 	}
 
-	for i := 0; i < 10; i++ {
-		channels[i] <- 'A' + i
+	for i, worker := range workers{
+		worker.in <- 'A' + i
 	}
-	time.Sleep(time.Millisecond)
+
+	wg.Wait()
 }	
 
 
