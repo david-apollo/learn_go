@@ -12,6 +12,7 @@ func CityList(contents []byte) engine.ParserResult {
 	cityURL := re.FindAllStringSubmatch(string(contents), -1)
 
 	result := engine.ParserResult{}
+	limit := 1
 	for _, m := range cityURL {
 		if strings.Contains(m[1], "征婚"){
 			continue
@@ -21,6 +22,10 @@ func CityList(contents []byte) engine.ParserResult {
 			Url: strings.Replace(m[2], `\u002F`, "/", -1),
 			ParserFunc: City,
 		})
+		limit --
+		if limit == 0 {
+			break
+		}
 	}
 	return result
 }
