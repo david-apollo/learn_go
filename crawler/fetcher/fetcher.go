@@ -1,6 +1,7 @@
 package fetcher
 
 import (
+	"time"
 	"golang.org/x/text/encoding/unicode"
 	"log"
 	"golang.org/x/text/encoding"
@@ -13,8 +14,11 @@ import (
 )
 
 
+var rateLmiter = time.Tick(10 * time.Millisecond)
+
 // Fetch func
 func Fetch(url string) ([]byte, error) {
+	<- rateLmiter
 	resp, err := http.Get("http://www.zhenai.com/zhenghun")
 	if err != nil {
 		panic(err)

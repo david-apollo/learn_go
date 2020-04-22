@@ -1,6 +1,8 @@
 package engine
 
-import "fmt"
+import (
+	"log"
+)
 
 // ConcurrentEngine type
 type ConcurrentEngine struct {
@@ -33,7 +35,7 @@ func (e ConcurrentEngine) Run(seeds ...Request) {
 	for {
 		result := <- out
 		for _, item := range result.Items {
-			fmt.Printf("Got item: %v", item)
+			log.Printf("Got item: %v", item)
 		}
 
 		for _, request := range result.Requests {
