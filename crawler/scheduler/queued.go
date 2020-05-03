@@ -22,9 +22,9 @@ func (s *QueuedScheduler) WorkerReady(w chan engine.Request) {
 }
 
 
-// ConfigureMasterWorkerChan func
-func (s *QueuedScheduler) ConfigureMasterWorkerChan(chan engine.Request) {
-	panic("implement me")
+// WorkerChan func
+func (s *QueuedScheduler) WorkerChan() chan engine.Request {
+	return make(chan engine.Request)
 }
 
 // Run func

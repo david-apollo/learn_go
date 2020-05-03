@@ -8,9 +8,9 @@ type SimpleScheduler struct {
 }
 
 
-// ConfigureMasterWorkerChan func Scheduler
-func (s *SimpleScheduler) ConfigureMasterWorkerChan(c chan engine.Request) {
-	s.workerChan = c
+// WorkerChan func
+func (s *SimpleScheduler) WorkerChan() chan engine.Request {
+	return s.workerChan
 }
 
 // Submit func
@@ -18,4 +18,9 @@ func (s *SimpleScheduler) Submit(r engine.Request) {
 	go func() {
 		s.workerChan <- r
 	}()
+}
+
+// Run func
+func (s *SimpleScheduler) Run() {
+	s.workerChan = make(chan engine.Request)
 }

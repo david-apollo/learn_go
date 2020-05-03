@@ -6,6 +6,14 @@ type Request struct {
 	ParserFunc func([]byte) ParserResult
 }
 
+// Item type
+type Item struct {
+	Url     string
+	Type    string
+	Id      string
+	Payload interface{}
+}
+
 // ParserResult type
 type ParserResult struct {
 	Requests []Request
