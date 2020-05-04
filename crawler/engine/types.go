@@ -17,7 +17,7 @@ type Item struct {
 // ParserResult type
 type ParserResult struct {
 	Requests []Request
-	Items []interface{}
+	Items []Item
 }
 
 // NilParser func
